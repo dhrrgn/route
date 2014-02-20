@@ -1,0 +1,23 @@
+{
+    "name": "orno/route",
+    "description": "Fast routing package combining Nikita Popov's FastRoute and Orno\\Di to provide route dispatching to dependency injected controllers.",
+    "keywords": ["orno", "route", "FastRoute", "dispatcher", "di"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.4",
+        "orno/di": "2.*",
+        "nikic/fast-route": "dev-master"
+    },
+    "authors": [
+        {
+            "name": "Phil Bennett",
+            "email": "hello@happyaccidents.me"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Orno\\Route\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
