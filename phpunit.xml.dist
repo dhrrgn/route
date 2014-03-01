@@ -12,8 +12,8 @@
          syntaxCheck="false">
 
     <testsuites>
-        <testsuite name="Orno Route - Test Suite">
-            <directory>./tests/OrnoTest/</directory>
+        <testsuite name="Orno Route Test Suite">
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
 
@@ -24,9 +24,9 @@
     </filter>
 
     <logging>
-        <log type="coverage-text" target="php://stdout" title="Orno\Loader" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50" highLowerBound="90"/>
-        <log type="coverage-html" target="coverage/html" title="Orno\Loader"/>
-        <log type="coverage-clover" target="coverage/clover/report.xml" title="Orno\Loader"/>
+        <log type="coverage-text" target="php://stdout" title="Orno\Route" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50" highLowerBound="90"/>
+        <log type="coverage-html" target="coverage/html" title="Orno\Route"/>
+        <log type="coverage-clover" target="coverage/clover/report.xml" title="Orno\Route"/>
     </logging>
 
 </phpunit>
