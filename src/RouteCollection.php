@@ -34,11 +34,6 @@ class RouteCollection extends RouteCollector implements RouteStrategyInterface
     protected $config;
 
     /**
-     * @var integer
-     */
-    protected $strategy;
-
-    /**
      * @var array
      */
     protected $routes = [];
