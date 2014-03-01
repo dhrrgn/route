@@ -7,6 +7,7 @@
  */
 namespace OrnoTest\Route;
 
+use Orno\Http\Exception as HttpException;
 use Orno\Http\Request;
 use Orno\Http\Response;
 use Orno\Http\JsonResponse;
@@ -14,6 +15,58 @@ use Orno\Route;
 
 class DispatcherTest extends \PHPUnit_Framework_Testcase
 {
+    /**
+     * Assert that a route using the Restful Strategy returns a json response
+     * when a http exception is thrown
+     *
+     * @return void
+     */
+    public function testRestfulStrategyReturnsJsonResponseWhenHttpExceptionIsThrown()
+    {
+        $controller = $this->getMock('SomeClass', ['someMethod']);
+        $controller->expects($this->once())
+                   ->method('someMethod')
+                   ->will($this->throwException(new HttpException\ConflictException));
+
+        $container = $this->getMock('Orno\Di\Container');
+        $container->expects($this->at(1))
+                  ->method('get')
+                  ->with($this->equalTo('SomeClass'))
+                  ->will($this->returnValue($controller));
+
+        $collection = new Route\RouteCollection($container);
+        $collection->setStrategy(Route\RouteStrategyInterface::RESTFUL_STRATEGY);
+        $collection->get('/route', 'SomeClass::someMethod');
+
+        $dispatcher = $collection->getDispatcher();
+
+        $response = $dispatcher->dispatch('GET', '/route');
+
+        $this->assertInstanceOf('Orno\Http\JsonResponse', $response);
+        $this->assertSame(409, $response->getStatusCode());
+        $this->assertSame('{"status_code":409,"message":"Conflict"}', $response->getContent());
+    }
+
+    /**
+     * Assert that a route using Restful Strategy throws exception for wrong response type
+     *
+     * @return void
+     */
+    public function testRestfulStrategyRouteThrowsExceptionWhenWrongResponseReturned()
+    {
+        $this->setExpectedException('RuntimeException', 'Your controller action must return a valid response for the Restful Strategy. Acceptable responses are of type: [Array], [ArrayObject] and [Orno\Http\JsonResponse]');
+
+        $collection = new Route\RouteCollection;
+        $collection->setStrategy(Route\RouteStrategyInterface::RESTFUL_STRATEGY);
+        $collection->get('/route', function ($response) {
+            return new \stdClass;
+        });
+
+        $dispatcher = $collection->getDispatcher();
+
+        $response = $dispatcher->dispatch('GET', '/route');
+    }
+
     /**
      * Assert that a route using the Restful Strategy gets passed the correct arguments
      *
