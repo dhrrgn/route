@@ -6,7 +6,7 @@
     "require": {
         "php": ">=5.4",
         "orno/di": "2.*",
-        "orno/http": "2.*",
+        "orno/http": "dev-master",
         "nikic/fast-route": "dev-master"
     },
     "authors": [
