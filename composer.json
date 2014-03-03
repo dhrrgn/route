@@ -19,5 +19,6 @@
         "psr-4": {
             "Orno\\Route\\": "src/"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
