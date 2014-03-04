@@ -91,10 +91,10 @@ class Dispatcher extends GroupCountBasedDispatcher implements RouteStrategyInter
         // handle getting of response based on strategy
         switch ($strategy) {
             case RouteStrategyInterface::REQUEST_RESPONSE_STRATEGY:
-                $response = $this->handleRequestResponseStrategy($controller);
+                $response = $this->handleRequestResponseStrategy($controller, $vars);
                 break;
             case RouteStrategyInterface::RESTFUL_STRATEGY:
-                $response = $this->handleRestfulStrategy($controller);
+                $response = $this->handleRestfulStrategy($controller, $vars);
                 break;
             case RouteStrategyInterface::URI_STRATEGY:
                 $response = $this->handleUriStrategy($controller, $vars);
@@ -127,13 +127,15 @@ class Dispatcher extends GroupCountBasedDispatcher implements RouteStrategyInter
      * Handles response to Request -> Response Strategy based routes
      *
      * @param  string|\Closure $controller
+     * @param  array           $vars
      * @return \Orno\Http\ResponseInterface
      */
-    protected function handleRequestResponseStrategy($controller)
+    protected function handleRequestResponseStrategy($controller, array $vars = [])
     {
         $response = $this->invokeController($controller, [
             $this->container->get('Orno\Http\Request'),
-            $this->container->get('Orno\Http\Response')
+            $this->container->get('Orno\Http\Response'),
+            $vars
         ]);
 
         if ($response instanceof ResponseInterface) {
@@ -149,13 +151,15 @@ class Dispatcher extends GroupCountBasedDispatcher implements RouteStrategyInter
      * Handles response to Restful Strategy based routes
      *
      * @param  string|\Closure $controller
+     * @param  array           $vars
      * @return \Orno\Http\ResponseInterface
      */
-    protected function handleRestfulStrategy($controller)
+    protected function handleRestfulStrategy($controller, array $vars = [])
     {
         try {
             $response = $this->invokeController($controller, [
-                $this->container->get('Orno\Http\Request')
+                $this->container->get('Orno\Http\Request'),
+                $vars
             ]);
 
             if ($response instanceof JsonResponse) {
