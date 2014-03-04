@@ -6,4 +6,53 @@
 [![Latest Stable Version](https://poser.pugx.org/orno/route/v/stable.png)](https://packagist.org/packages/orno/route)
 [![Total Downloads](https://poser.pugx.org/orno/route/downloads.png)](https://packagist.org/packages/orno/route)
 
-Fast routing package combining Nikita Popov's FastRoute and Orno\\Di to provide route dispatching to dependency injected controllers.
+Orno\Route is a fast routing/dispatcher package enabling you to build well designed performant web apps. At it's core is Nikita Popov's [FastRoute](https://github.com/nikic/FastRoute) package allowing this package to concentrate on the dispatch of your controllers.
+
+## Installation
+
+Add `orno/route` to your `composer.json`.
+
+```json
+{
+    "require": {
+        "orno/route": "1.*"
+    },
+    "minimum-stability": "dev"
+}
+```
+
+Allow Composer to autoload the package.
+
+```php
+<?php
+
+include 'vendor/autoload.php';
+```
+
+## Usage
+
+
+### Basic Usage
+
+By default when dispatching your controllers, Orno\Route will employ the `Request -> Response Strategy` (more on strategies later). This strategy will provide you with a request and response object with which you can pull data from the request, manipulate the response and return it.
+
+```php
+<?php
+
+use Orno\Http\Request;
+use Orno\Http\Response;
+
+$router = new Orno\Route\RouteCollection;
+
+$router->addRoute('GET', '/acme/route', function (Request $request, Response $response) {
+    // do some clever shiz
+
+    return $response;
+});
+
+$dispatcher = $router->getDispatcher();
+
+$response = $dispatcher->dispatch('GET', '/acme/route');
+
+$response->send();
+```
