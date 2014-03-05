@@ -34,6 +34,7 @@ include 'vendor/autoload.php';
 - [Basic Usage](#basic-usage)
 - [Controller Types](#controller-types)
     - [Class Methods](#class-methods)
+        - [Dependency Injection](#dependency-injection)
     - [Anonymous Functions/Closures](#anonymous-functionsclosures)
     - [Named Functions](#name-functions)
 - [Wildcard Routes](#wildcard-routes)
@@ -93,6 +94,20 @@ $dispatcher = $router->getDispatcher();
 $response = $dispatcher->dispatch('GET', '/acme/route');
 
 $response->send();
+```
+
+##### Dependency Injection
+
+Controller classes are resolved through [Orno\Di](https://github.com/orno/di) so if your class has shared dependencies between methods you can have said dependencies injected in to the class contructor. For more information on using [Orno\Di](https://github.com/orno/di), check out the [documentation](https://github.com/orno/di).
+
+Once you have a configured Container, it is as simple as injecting it in to the `RouteCollection`.
+
+```php
+$container = new Orno\Di\Container;
+// ... set up the container
+
+$router = new Orno\Route\RouteCollection($container);
+// ... handle routing
 ```
 
 #### Anonymous Functions/Closures
