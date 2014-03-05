@@ -39,6 +39,13 @@ include 'vendor/autoload.php';
     - [Named Functions](#name-functions)
 - [Wildcard Routes](#wildcard-routes)
 - [Request Methods](#request-methods)
+- [Strategies](#strategies)
+    - [Request -> Response Strategy](#request-response-strategy)
+    - [URI Strategy](#uri-strategy)
+    - [Restful Strategy](#restful-strategy)
+        - [Pre-built JSON Resonses](#pre-built-json-responses)
+        - [HTTP 4xx Exceptions](#http-4xx-exceptions)
+- [Considerations](#considerations)
 
 ### Basic Usage
 
@@ -218,3 +225,17 @@ $router->options('/acme/route', 'Acme\Controller::optionsMethod');
 ```
 
 Each of the above routes will respond to the same URI but will invoke a different callable based on the HTTP request method.
+
+### Strategies
+
+Route strategies are a way of encouraging good design based on the type of application you are building.
+
+#### Request -> Response Strategy
+
+#### URI Strategy
+
+#### Restful Strategy
+
+### Considerations
+
+The main thing to consider when you are building your controllers is that the dispatcher does not handle any output buffering, it is a Response based dispatcher and will do it's best to build a response based on what is returned from your controller before sending that Response to the browser, however, if you are outputting from your controller, it will output as the code is run and could cause problems with the setting of any header based values.
