@@ -37,6 +37,7 @@ include 'vendor/autoload.php';
     - [Anonymous Functions/Closures](#anonymous-functionsclosures)
     - [Named Functions](#name-functions)
 - [Wildcard Routes](#wildcard-routes)
+- [Request Methods](#request-methods)
 
 ### Basic Usage
 
@@ -144,6 +145,8 @@ Wilcard routes allow a route to respond to dynamic parts of a URI. If a route ha
 use Orno\Http\Request;
 use Orno\Http\Response;
 
+$router = new Orno\Route\RouteCollection;
+
 $router->addRoute('GET', '/user/{id}/{name}', function (Request $request, Response $response, array $args) {
     // $args = [
     //     'id'   => {id},  // the actual value of {id}
@@ -166,6 +169,8 @@ Dynamic parts of a URI can also be limited to match certain requirements.
 use Orno\Http\Request;
 use Orno\Http\Response;
 
+$router = new Orno\Route\RouteCollection;
+
 // this route will only match if {id} is a number and {name} is a word
 $router->addRoute('GET', '/user/{id:number}/{name:word}', function (Request $request, Response $response, array $args) {
     // do some clever shiz
@@ -180,3 +185,19 @@ $response->send();
 ```
 
 Dynamic parts can also be set as any regular expression such as `{id:[0-9]+}`.
+
+### Request Methods
+
+The router has convenience methods for setting routes that will respond differently depending on the HTTP request method.
+
+```php
+$router = new Orno\Route\RouteCollection;
+
+$router->get('/acme/route', 'Acme\Controller::getMethod');
+$router->post('/acme/route', 'Acme\Controller::postMethod');
+$router->put('/acme/route', 'Acme\Controller::putMethod');
+$router->patch('/acme/route', 'Acme\Controller::patchMethod');
+$router->delete('/acme/route', 'Acme\Controller::deleteMethod');
+$router->head('/acme/route', 'Acme\Controller::headMethod');
+$router->options('/acme/route', 'Acme\Controller::optionsMethod');
+```
