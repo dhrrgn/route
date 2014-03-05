@@ -40,10 +40,10 @@ include 'vendor/autoload.php';
 - [Wildcard Routes](#wildcard-routes)
 - [Request Methods](#request-methods)
 - [Strategies](#strategies)
-    - [Request -> Response Strategy](#request-response-strategy)
+    - [Request -> Response Strategy](#request---response-strategy)
     - [URI Strategy](#uri-strategy)
     - [Restful Strategy](#restful-strategy)
-        - [Pre-built JSON Resonses](#pre-built-json-responses)
+        - [Pre-built JSON Resopnses](#pre-built-json-responses)
         - [HTTP 4xx Exceptions](#http-4xx-exceptions)
 - [Considerations](#considerations)
 
@@ -228,7 +228,32 @@ Each of the above routes will respond to the same URI but will invoke a differen
 
 ### Strategies
 
-Route strategies are a way of encouraging good design based on the type of application you are building.
+Route strategies are a way of encouraging good design based on the type of application you are building. Available strategies are as follows.
+
+- `Orno\Route\RouteStrategyInterface::REQUEST_RESPONSE_STRATEGY`
+- `Orno\Route\RouteStrategyInterface::RESTFUL_STRATEGY`
+- `Orno\Route\RouteStrategyInterface::URI_STRATEGY`
+
+Strategies can be set individually per route by passing in one of the above constants as the last argument of your route definition.
+
+```php
+use Orno\Route\RouteStrategyInterface;
+
+$router = new Orno\Route\RouteCollection;
+
+$router->addRoute('GET', '/acme/route', 'Acme\Controller::action', RouteStrategyInterface::REQUEST_RESPONSE_STRATEGY);
+$router->get('/acme/route', 'Acme\Controller::action', RouteStrategyInterface::URI_STRATEGY);
+$router->put('/acme/route', 'Acme\Controller::action', RouteStrategyInterface::RESTFUL_STRATEGY);
+```
+
+Or a global strategy can be set to be used by all routes in a specific collection.
+
+```php
+use Orno\Route\RouteStrategyInterface;
+
+$router = new Orno\Route\RouteCollection;
+$router->setStrategy(RouteStrategyInterface::RESTFUL_STRATEGY);
+```
 
 #### Request -> Response Strategy
 
