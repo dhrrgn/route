@@ -33,6 +33,9 @@ include 'vendor/autoload.php';
 
 - [Basic Usage](#basic-usage)
 - [Controller Types](#controller-types)
+    - [Class Methods](#class-methods)
+    - [Anonymous Functions/Closures](#anonymous-functionsclosures)
+    - [Named Functions](#name-functions)
 
 ### Basic Usage
 
@@ -93,8 +96,6 @@ $response->send();
 #### Anonymous Functions/Closures
 
 ```php
-<?php
-
 use Orno\Http\Request;
 use Orno\Http\Response;
 
@@ -115,8 +116,6 @@ $response->send();
 #### Named Functions
 
 ```php
-<?php
-
 use Orno\Http\Request;
 use Orno\Http\Response;
 
