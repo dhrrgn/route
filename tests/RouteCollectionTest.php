@@ -112,7 +112,42 @@ class RouteCollectionTest extends \PHPUnit_Framework_Testcase
     {
         $router = new RouteCollection;
 
+        $this->assertInstanceOf('Orno\Route\DispatcherInterface', $router->getDispatcher());
         $this->assertInstanceOf('Orno\Route\Dispatcher', $router->getDispatcher());
         $this->assertInstanceOf('FastRoute\Dispatcher\GroupCountBased', $router->getDispatcher());
     }
+
+    /**
+     * Asserts that `getDispatcher` method returns correct instance
+     *
+     * @return void
+     */
+    public function testSetDispatcherClassOnCollection()
+    {
+        $router = new RouteCollection;
+        $router->setDispatcherClass('OrnoTest\Assets\TestDispatcher');
+
+        $this->assertInstanceOf('Orno\Route\DispatcherInterface', $router->getDispatcher());
+        $this->assertInstanceOf('OrnoTest\Assets\TestDispatcher', $router->getDispatcher());
+
+        $router->setDispatcherClass('OrnoTest\Assets\TestBadDispatcher');
+
+        $this->setExpectedException('InvalidArgumentException');
+        $router->getDispatcher();
+    }
+
+    /**
+     * Asserts that `getDispatcher` method returns correct instance
+     *
+     * @return void
+     */
+    public function testCanSetNewDispatcherClassOnCollection()
+    {
+        $router = new RouteCollection;
+        $router->setDispatcherClass('OrnoTest\Assets\TestDispatcher');
+
+        $this->assertInstanceOf('Orno\Route\DispatcherInterface', $router->getDispatcher());
+        $this->assertInstanceOf('OrnoTest\Assets\TestDispatcher', $router->getDispatcher());
+    }
+
 }

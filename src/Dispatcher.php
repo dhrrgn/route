@@ -16,7 +16,7 @@ use Orno\Http\Response;
 use Orno\Http\ResponseInterface;
 use Orno\Route\RouteCollection;
 
-class Dispatcher extends GroupCountBasedDispatcher implements RouteStrategyInterface
+class Dispatcher extends GroupCountBasedDispatcher implements RouteStrategyInterface, DispatcherInterface
 {
     /**
      * Route strategy functionality

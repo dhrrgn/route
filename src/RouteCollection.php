@@ -7,6 +7,7 @@
  */
 namespace Orno\Route;
 
+use InvalidArgumentException;
 use FastRoute\DataGenerator;
 use FastRoute\DataGenerator\GroupCountBased as GroupCountBasedDataGenerator;
 use FastRoute\RouteCollector;
@@ -37,6 +38,11 @@ class RouteCollection extends RouteCollector implements RouteStrategyInterface
      * @var array
      */
     protected $routes = [];
+
+    /**
+     * @var string
+     */
+    protected $dispatcherClass = 'Orno\Route\Dispatcher';
 
     /**
      * Constructor
@@ -107,13 +113,26 @@ class RouteCollection extends RouteCollector implements RouteStrategyInterface
     }
 
     /**
+     * Sets the Dispatcher class name.
+     * @param string $className The Dispatcher class name
+     */
+    public function setDispatcherClass($className)
+    {
+        $this->dispatcherClass = $className;
+    }
+
+    /**
      * Builds a dispatcher based on the routes attached to this collection
      *
      * @return \Orno\Route\Dispatcher
      */
     public function getDispatcher()
     {
-        $dispatcher = new Dispatcher($this->container, $this->routes, $this->getData());
+        $cls = $this->dispatcherClass;
+        if ( ! class_implements($cls)) {
+            throw new InvalidArgumentException("Dispatcher '{$cls}' must implement Orno\\Route\\DispatcherInterface");
+        }
+        $dispatcher = new $cls($this->container, $this->routes, $this->getData());
 
         if (! is_null($this->strategy)) {
             $dispatcher->setStrategy($this->strategy);
